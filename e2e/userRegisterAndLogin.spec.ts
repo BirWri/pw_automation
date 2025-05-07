@@ -12,7 +12,8 @@ test.describe('Sign Up user and Delete user', () => {
 
   test('has title', async ({ page }) => {
     //Verify a chosen element is visible on the home page
-    await expect(page).toHaveTitle('Automation Exercise')
+    const mainLogo = page.locator('a img')
+    await expect(mainLogo).toBeVisible()
   });
 
 
