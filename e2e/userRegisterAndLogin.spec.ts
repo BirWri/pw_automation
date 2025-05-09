@@ -1,19 +1,22 @@
 import { test, expect } from '@playwright/test';
+import HomePage from '../pages/home.page';
 
-test.describe('Sign Up user and Delete user', () => {
+test.describe('Sign Up user, Login User, Delete user', () => {
+  let homePage: HomePage;
 
   test.beforeEach(async ({ page }) => {
+    homePage= new HomePage(page);
     // Open the URL
-    await page.goto('https://automationexercise.com');
+    await homePage.page.goto('/');
   
     // Verify that home page is visible
-    await expect(page).toHaveURL('https://automationexercise.com')
+    await expect(homePage.page).toHaveURL('https://automationexercise.com')
   })
 
-  test('has title', async ({ page }) => {
+  test('Has main logo visible', async ({ page }) => {
     //Verify a chosen element is visible on the home page
-    const mainLogo = page.locator('a img')
-    await expect(mainLogo).toBeVisible()
+    //const mainLogo = page.locator('a>img')
+    await expect(homePage.mainLogo).toBeVisible()
   });
 
 
@@ -26,47 +29,53 @@ test.describe('Sign Up user and Delete user', () => {
     await expect(page.locator('text=New User Signup!')).toBeVisible();
     
     // Fill first form
-    await page.getByRole('textbox', { name: 'Name' }).click();
-    await page.getByRole('textbox', { name: 'Name' }).fill('User1');
-    await page.getByRole('textbox', { name: 'Name' }).press('Tab');
-    await page.locator('form').filter({ hasText: 'Signup' }).getByPlaceholder('Email Address').fill('cawap59378@bocapies.com');
-    await page.getByRole('button', { name: 'Signup' }).click();
+    await homePage.name.click();
+    await homePage.name.fill('User1');
+    await homePage.email.click();
+    await homePage.email.fill('cawap59378@bocapies.com');
+    await homePage.signUpButton.click();
     //Verify "ENTER ACCOUNT INFORMATION" is visible
     await expect(page.locator('text=ENTER ACCOUNT INFORMATION')).toBeVisible();
 
     // Fill Signup form
-    await page.getByRole('radio', { name: 'Mrs.' }).check();
-    await page.getByRole('textbox', { name: 'Password *' }).click();
-    await page.getByRole('textbox', { name: 'Password *' }).fill('password1234');
+    await homePage.femaleGender.check();
+    await homePage.userPassword.click();
+    await homePage.userPassword.fill('password1234');
 
-    await page.locator('#days').selectOption('1');
-    await page.locator('#months').selectOption('1');
-    await page.locator('#years').selectOption('2000');
-    await page.getByRole('checkbox', { name: 'Sign up for our newsletter!' }).check();
-    await page.getByRole('checkbox', { name: 'Receive special offers from' }).check();
+    await homePage.dayOfBirth.selectOption('1');
+    await homePage.monthOfBirth.selectOption('1');
+    await homePage.yearOfBirth.selectOption('2000');
+    await homePage.newsLetter.check();
+    await homePage.specialOffers.check();
 
-    await page.getByRole('textbox', { name: 'First name *' }).click();
-    await page.getByRole('textbox', { name: 'First name *' }).fill('User');
-    await page.getByRole('textbox', { name: 'First name *' }).press('Tab');
-    await page.getByRole('textbox', { name: 'Last name *' }).fill('One');
-    await page.getByRole('textbox', { name: 'Last name *' }).press('Tab');
-    await page.getByRole('textbox', { name: 'Company', exact: true }).fill('Freelance');
-    await page.getByRole('textbox', { name: 'Address * (Street address, P.' }).click();
-    await page.getByRole('textbox', { name: 'Address * (Street address, P.' }).fill('Street 1');
-    await page.getByRole('textbox', { name: 'Address * (Street address, P.' }).press('Tab');
-    await page.getByRole('textbox', { name: 'Address * (Street address, P.' }).click();
-    await page.getByRole('textbox', { name: 'Address * (Street address, P.' }).fill('Street 1, 11');
-    await page.getByLabel('Country *').selectOption('United States');
-    await page.getByRole('textbox', { name: 'State *' }).click();
-    await page.getByRole('textbox', { name: 'State *' }).fill('california');
-    await page.getByRole('textbox', { name: 'State *' }).press('Tab');
-    await page.getByRole('textbox', { name: 'City * Zipcode *' }).fill('LA');
-    await page.locator('#zipcode').click();
-    await page.locator('#zipcode').fill('112');
+    await homePage.userFirstName.click();
+    await homePage.userFirstName.fill('User');
+    await homePage.userFirstName.press('Tab');
+
+    await homePage.userLastName.fill('One');
+    await homePage.userLastName.press('Tab');
+
+    await homePage.userCompanyName.fill('Freelance');
+
+    await homePage.userAddressStreet.click();
+    await homePage.userAddressStreet.fill('Street 1');
+    await homePage.userAddressStreet.press('Tab');
+    await homePage.userAddressStreet.click();
+    await homePage.userAddressStreet.fill('Street 1, 11');
+
+    await homePage.userCountry.selectOption('United States');
+    await homePage.userState.click();
+    await homePage.userState.fill('california');
+    await homePage.userState.press('Tab');
+
+    await homePage.userCityZipCode.fill('LA');
+    await homePage.userZipCode.click();
+    await homePage.userZipCode.fill('112');
+
     await page.locator('div').filter({ hasText: 'Enter Account Information' }).nth(1).click();
-    await page.getByRole('textbox', { name: 'Mobile Number *' }).click();
-    await page.getByRole('textbox', { name: 'Mobile Number *' }).fill('22222222');
-    await page.getByRole('button', { name: 'Create Account' }).click();
+    await homePage.userMobileNumber.click();
+    await homePage.userMobileNumber.fill('22222222');
+    await homePage.createAccountbutton.click();
 
     // Verify 'Account Created' is visible
     await expect(page.locator('text=ACCOUNT CREATED')).toBeVisible();
