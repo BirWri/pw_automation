@@ -30,6 +30,8 @@ class HomePage {
     userZipCode:Locator;
     userMobileNumber:Locator;
     createAccountbutton:Locator;
+    confirmationButton: Locator;
+    deleteUserButton:Locator;
 
 
     constructor(page:Page){
@@ -56,6 +58,8 @@ class HomePage {
         this.userZipCode = page.locator('#zipcode')
         this.userMobileNumber = page.getByRole('textbox', { name: 'Mobile Number *' })
         this.createAccountbutton = page.getByRole('button', { name: 'Create Account' })
+        this.confirmationButton = page.getByRole('link', { name: 'Continue' })
+        this.deleteUserButton = page.getByRole('link', { name: ' Delete Account' })
     }
 
 }
