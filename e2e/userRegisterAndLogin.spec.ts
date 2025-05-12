@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import HomePage from '../pages/home.page';
 import { faker } from '@faker-js/faker';
+import { createRandomUser } from '../utils/testUser';
 
 test.describe('Sign Up user, Login User, Delete user', () => {
   let homePage: HomePage;

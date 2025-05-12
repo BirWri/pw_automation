@@ -9,6 +9,10 @@ class HomePage {
 
     page: Page;
     mainLogo: Locator;
+    consentButton: Locator;
+    loginEmail:Locator;
+    loginPassword:Locator;
+    loginButton: Locator;
     name: Locator;
     email: Locator;
     signUpButton: Locator;
@@ -37,7 +41,11 @@ class HomePage {
     constructor(page:Page){
         this.page = page;
         this.mainLogo = page.locator('a>img')
+        this.consentButton = page.getByRole('button', { name: 'Consent' })
         this.name = page.getByRole('textbox', { name: 'Name' })
+        this.loginEmail=page.locator('form').filter({ hasText: 'Login' }).getByPlaceholder('Email Address')
+        this.loginPassword= page.getByRole('textbox', { name: 'Password' })
+        this.loginButton = page.getByRole('button', { name: 'Login' })
         this.email = page.locator('form').filter({ hasText: 'Signup' }).getByPlaceholder('Email Address')
         this.signUpButton = page.getByRole('button', { name: 'Signup' })
         this.userPassword = page.getByRole('textbox', { name: 'Password *' })
