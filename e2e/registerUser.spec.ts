@@ -90,10 +90,30 @@ test.describe('Sign Up user, Login User, Delete user', () => {
     // Verify 'Logged in as username' is visible
     await expect(page.locator(`text=Logged in as ${user.userName}`)).toBeVisible();
 
-
-
     // Save the user globally to a JSON file
     fs.writeFileSync('test-user.json', JSON.stringify(user));
+
+    });
+
+    test('Register new user with and existing email', async ({ page }) => {
+    const user = JSON.parse(fs.readFileSync('test-user.json', 'utf-8'));
+    // Accept consent and navigate to signup/login page
+    await page.getByRole('button', { name: 'Consent' }).click();
+    await page.getByRole('link', { name: ' Signup / Login' }).click();
+    //Verify "New User Signup!" is visible
+    await expect(page.locator('text=New User Signup!')).toBeVisible();
+
+    // Fill first form
+    await homePage.name.click();
+    await homePage.name.fill(user.userName);
+    await homePage.email.click();
+    await homePage.email.fill(user.userEmail);
+    await homePage.signUpButton.click();
+
+    //Verify "Email Address already exist" is visible
+    await page.waitForSelector(`text=Email Address already exist`);
+    //await page.waitForTimeout(2000); // wait for 2 seconds
+    await expect(page.locator('text=Email Address already exist')).toBeVisible();
 
     });
 
